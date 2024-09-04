@@ -1,39 +1,72 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+Logs that makes you wow! For both IDE Terminal and Device Console Stream.
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Wrapper of [logger](https://pub.dev/packages/logger) with built-in pretty print and in the format that accomodates to the methods and structure of [logging](https://pub.dev/packages/logging).
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+1. Import the package:
+```yaml
+pretty_logger:
+  git: git@github.com:stencilman/pretty_logger.git
+```
+2. Import in your project
+```dart
+import 'package:pretty_logger/pretty_logger.dart';
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
+1. Initialise the `LogHandler` in the beginning of `main.dart`:
 ```dart
-const like = 'sample';
+void main() {
+  LogHandler.init();
+  ...
+}
+```
+And dispose it in ur first screen under Material
+```dart
+@override
+void dispose() {
+  LogHandler.dispose();
+  super.dispose();
+}
+```
+2. Now just call like this:
+```dart
+log.info(yourAnyMessage);
+```
+There are many level of logs with the priority:
+`finest()` < `finer()` < `fine()` < `info()` < `warning()` < `severe()` < `shout()`
+
+`finest()` is for most useless information and `shout()` is for the most important information that requires immediate attention.
+
+3. Set your levels like:
+```dart
+log.level = Level.info;
+```
+When the log is set at a particular level it only shows the logs of priority >= to that level. So for example, setting it to `Level.info` will hide logs of `fine()` and so on, and show only from `info()` to `shout()`
+
+4. You can listen to the logs in any `StreamBuilder`
+```dart
+stream: LogHandler.logRecordsStream,
+```
+You can retrive the printable text from the snapshot data using:
+```dart
+String printableText = LogHandler.formatLogRecord(yourSnapshotData);
 ```
 
-## Additional information
+## Mapping of logging into logger package:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+`Level.finest` -> `Level.verbose`
+
+`Level.finer` -> `Level.trace`
+
+`Level.fine` -> `Level.debug`
+
+`Level.info` -> `Level.info`
+
+`Level.warning` -> `Level.warning`
+
+`Level.severe` -> `Level.error`
+
+`Level.shout` -> `Level.fatal`
