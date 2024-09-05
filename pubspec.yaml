@@ -3,7 +3,7 @@ description: "Pretty wrapper for logger"
 version: 0.0.1
 
 environment:
-  sdk: ^3.5.1
+  sdk: ^3.0.0
   flutter: ">=1.17.0"
 
 dependencies:
