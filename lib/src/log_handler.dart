@@ -64,12 +64,12 @@ class LogHandler {
   }
 
   static String _transformBorderLine(String input) {
-    final hyphens = '─' * 40;
+    final hyphens = '─' * 30;
     return "${input.split('───────')[0]}$hyphens";
   }
 
   static String _transformMiddleLine(String input) {
-    final hyphens = '─' * 40;
+    final hyphens = '─' * 30;
     return "├$hyphens";
   }
 }
