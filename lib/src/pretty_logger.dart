@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+import 'package:pretty_logger/src/log_filter.dart';
 import 'pretty_printer_enums.dart';
 
 class PrettyLogger {
@@ -15,7 +16,7 @@ class PrettyLogger {
   void _initLogger({Level? printingLevel}) {
     _logger = Logger(
       printer: (printingLevel ?? _currentLevel).printLevel,
-      filter: DevelopmentFilter()..level = _currentLevel,
+      filter: CustomLogFilter()..level = _currentLevel,
       level: _currentLevel,
     );
   }
