@@ -14,7 +14,7 @@ class LogHandler {
   static Stream<List<OutputEvent>> get logRecordsStream => _logRecords.stream;
 
   static void init() {
-    log.level = kDebugMode ? Level.info : Level.all;
+    log.level = Level.info;
     Logger.addOutputListener(_handleLog);
     log.shout('weave, debugMode: $kDebugMode, logLevel: ${log.level}');
   }
