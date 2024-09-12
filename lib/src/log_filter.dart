@@ -1,4 +1,5 @@
-import '../pretty_logger.dart';
+import 'logger/src/log_event.dart';
+import 'logger/src/log_filter.dart';
 
 class CustomLogFilter extends LogFilter {
   @override
