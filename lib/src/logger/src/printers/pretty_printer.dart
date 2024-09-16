@@ -263,7 +263,11 @@ class PrettyPrinter extends LogPrinter {
       if (count < stackTraceBeginIndex) {
         continue;
       }
-      formatted.add('#${count - stackTraceBeginIndex + 1}   ${line.replaceFirst(RegExp(r'#\d+\s+'), '')}');
+      if(line.contains('package:pretty_logger')) {
+        stackTraceLength++;
+      } else {
+        formatted.add('    #${count - stackTraceBeginIndex + 1}   ${line.replaceFirst(RegExp(r'#\d+\s+'), '')}');
+      }
     }
 
     if (formatted.isEmpty) {

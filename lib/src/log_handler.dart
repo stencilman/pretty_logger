@@ -8,7 +8,7 @@ import 'logger/src/logger.dart';
 import 'logger/src/output_event.dart';
 
 class LogHandler {
-  static const int _maxRecordsStoredOnApp = 50000;
+  static const int _maxRecordsStoredOnApp = 2000;
   static final BehaviorSubject<List<OutputEvent>> _logRecords =
       BehaviorSubject<List<OutputEvent>>.seeded([]);
   static Stream<List<OutputEvent>> get logRecordsStream => _logRecords.stream;
@@ -38,7 +38,7 @@ class LogHandler {
     final dateTime = DateFormat('HH:mm:ss.SS').format(record.origin.time);
     final datePrefix =
         withDate ? DateFormat.yMd().format(record.origin.time) : '';
-    return '\n[${record.level.name.toUpperCase()}]  |  $datePrefix  |  $dateTime\n$lines';
+    return '[${record.level.name.toUpperCase()}]  |  $datePrefix  |  $dateTime  ->  $lines';
   }
 
   static String _formatLine(String line) {

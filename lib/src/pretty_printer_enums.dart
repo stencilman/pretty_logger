@@ -13,26 +13,23 @@ extension PrettyPrinterEnumsExtension on PrettyPrintLevel {
     switch (this) {
       case PrettyPrintLevel.succinctPrinter:
         return PrettyPrinter(
-          printEmojis: false,
           methodCount: 0,
+          printEmojis: false,
         );
 
       case PrettyPrintLevel.moderatePrinter:
         return PrettyPrinter(
-          stackTraceBeginIndex: 4,
-          methodCount: 5,
+          methodCount: 1,
           printEmojis: false,
         );
       case PrettyPrintLevel.detailedPrinter:
         return PrettyPrinter(
-          stackTraceBeginIndex: 4,
-          methodCount: 7,
+          methodCount: 3,
           printEmojis: false,
         );
       case PrettyPrintLevel.highlyDetailedPrinter:
         return PrettyPrinter(
-          stackTraceBeginIndex: 4,
-          methodCount: 12,
+          methodCount: 8,
           printEmojis: false,
         );
     }
