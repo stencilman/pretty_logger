@@ -10,3 +10,10 @@ class CustomLogFilter extends LogFilter {
     return false;
   }
 }
+
+class NoLogFilter extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
+    return false;
+  }
+}

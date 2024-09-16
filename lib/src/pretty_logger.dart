@@ -7,6 +7,7 @@ class PrettyLogger {
   late Logger _logger;
   Level _currentLevel;
   PrettyPrintLevel _currentPrinter;
+  bool _showLog;
 
   static final PrettyLogger _instance = PrettyLogger._internal();
   static PrettyLogger get instance => _instance;
@@ -16,14 +17,17 @@ class PrettyLogger {
 
   PrettyLogger._internal()
       : _currentLevel = Level.info,
-        _currentPrinter = PrettyPrintLevel.succinctPrinter {
+        _currentPrinter = PrettyPrintLevel.succinctPrinter,
+        _showLog = true {
     _initLogger();
   }
 
   void _initLogger() {
     _logger = Logger(
       printer: _currentPrinter.getPrinter,
-      filter: CustomLogFilter()..level = _currentLevel,
+      filter: _showLog
+          ? (CustomLogFilter()..level = _currentLevel)
+          : NoLogFilter(),
       level: _currentLevel,
     );
   }
@@ -38,11 +42,16 @@ class PrettyLogger {
     _initLogger();
   }
 
-  void finest(dynamic message) => _logger.v(message);
-  void finer(dynamic message) => _logger.t(message);
-  void fine(dynamic message) => _logger.d(message);
-  void info(dynamic message) => _logger.i(message);
-  void warning(dynamic message) => _logger.w(message);
-  void severe(dynamic message) => _logger.e(message);
-  void shout(dynamic message) => _logger.f(message);
+  set showLog(bool setter) {
+    _showLog = setter;
+    _initLogger();
+  }
+
+  void finest(dynamic message) => _showLog ? _logger.v(message) : null;
+  void finer(dynamic message) => _showLog ? _logger.t(message) : null;
+  void fine(dynamic message) => _showLog ? _logger.d(message) : null;
+  void info(dynamic message) => _showLog ? _logger.i(message) : null;
+  void warning(dynamic message) => _showLog ? _logger.w(message) : null;
+  void severe(dynamic message) => _showLog ? _logger.e(message) : null;
+  void shout(dynamic message) => _showLog ? _logger.f(message) : null;
 }
