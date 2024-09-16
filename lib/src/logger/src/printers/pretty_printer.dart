@@ -256,8 +256,11 @@ class PrettyPrinter extends LogPrinter {
         .toList();
     List<String> formatted = [];
 
+
     int stackTraceLength =
         (methodCount != null ? min(lines.length, methodCount) : lines.length);
+    int originalStackTraceLength = stackTraceLength;
+
     for (int count = 0; count < stackTraceLength; count++) {
       var line = lines[count];
       if (count < stackTraceBeginIndex) {
@@ -266,7 +269,7 @@ class PrettyPrinter extends LogPrinter {
       if(line.contains('package:pretty_logger')) {
         stackTraceLength++;
       } else {
-        formatted.add('    #${count - stackTraceBeginIndex + 1}   ${line.replaceFirst(RegExp(r'#\d+\s+'), '')}');
+        formatted.add('    #${count - stackTraceBeginIndex + 1 - (stackTraceLength - originalStackTraceLength)}   ${line.replaceFirst(RegExp(r'#\d+\s+'), '')}');
       }
     }
 
