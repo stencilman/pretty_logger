@@ -1,4 +1,5 @@
-import 'package:logger/logger.dart';
+import 'logger/src/log_printer.dart';
+import 'logger/src/printers/pretty_printer.dart';
 
 enum PrettyPrintLevel {
   succinctPrinter,
@@ -8,40 +9,42 @@ enum PrettyPrintLevel {
 }
 
 extension PrettyPrinterEnumsExtension on PrettyPrintLevel {
-  LogPrinter get printer {
+  LogPrinter get getPrinter {
     switch (this) {
       case PrettyPrintLevel.succinctPrinter:
-        return SimplePrinter();
+        return PrettyPrinter(
+          methodCount: 0,
+          printEmojis: false,
+        );
 
       case PrettyPrintLevel.moderatePrinter:
         return PrettyPrinter(
-          stackTraceBeginIndex: 1,
-          methodCount: 2,
+          methodCount: 1,
+          printEmojis: false,
         );
       case PrettyPrintLevel.detailedPrinter:
         return PrettyPrinter(
-          stackTraceBeginIndex: 1,
-          methodCount: 4,
+          methodCount: 3,
+          printEmojis: false,
         );
       case PrettyPrintLevel.highlyDetailedPrinter:
         return PrettyPrinter(
-          stackTraceBeginIndex: 1,
-          methodCount: 6,
+          methodCount: 8,
+          printEmojis: false,
         );
     }
   }
-}
 
-extension LevelAccordingPrettyPrintExtension on Level {
-  LogPrinter get printLevel {
-    if (value <= Level.debug.value) {
-      return PrettyPrintLevel.succinctPrinter.printer;
-    } else if (value < Level.warning.value) {
-      return PrettyPrintLevel.moderatePrinter.printer;
-    } else if (value == Level.error.value) {
-      return PrettyPrintLevel.detailedPrinter.printer;
-    } else {
-      return PrettyPrintLevel.highlyDetailedPrinter.printer;
+  String get getLabel {
+    switch (this) {
+      case PrettyPrintLevel.succinctPrinter:
+        return 'Succinct';
+      case PrettyPrintLevel.moderatePrinter:
+        return 'Modetate (Lv 1)';
+      case PrettyPrintLevel.detailedPrinter:
+        return 'Detailed (Lv 3)';
+      case PrettyPrintLevel.highlyDetailedPrinter:
+        return 'Highly Detailed (Lv 8)';
     }
   }
 }

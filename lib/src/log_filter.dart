@@ -1,4 +1,5 @@
-import '../pretty_logger.dart';
+import 'logger/src/log_event.dart';
+import 'logger/src/log_filter.dart';
 
 class CustomLogFilter extends LogFilter {
   @override
@@ -6,6 +7,13 @@ class CustomLogFilter extends LogFilter {
     if (event.level.value >= level!.value) {
       return true;
     }
+    return false;
+  }
+}
+
+class NoLogFilter extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
     return false;
   }
 }

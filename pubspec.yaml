@@ -9,7 +9,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  logger:
   rxdart:
   intl:
 
