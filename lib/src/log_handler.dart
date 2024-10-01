@@ -1,30 +1,32 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:pretty_logger/src/pretty_printer_enums.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'log.dart';
+import 'logger/src/log_event.dart';
 import 'logger/src/log_level.dart';
 import 'logger/src/logger.dart';
 import 'logger/src/output_event.dart';
 
 class LogHandler {
-  static const int _maxRecordsStoredOnApp = 2000;
-  static final BehaviorSubject<List<OutputEvent>> _logRecords =
-      BehaviorSubject<List<OutputEvent>>.seeded([]);
-  static Stream<List<OutputEvent>> get logRecordsStream => _logRecords.stream;
+  static const int _maxRecordsStoredOnApp = 4000;
+  static final BehaviorSubject<List<LogEvent>> _logRecords =
+      BehaviorSubject<List<LogEvent>>.seeded([]);
+  static Stream<List<LogEvent>> get logRecordsStream => _logRecords.stream;
 
   static void init() {
     log.level = Level.info;
-    Logger.addOutputListener(_handleLog);
+    Logger.addLogListener(_handleLog);
     log.shout('weave, debugMode: $kDebugMode, logLevel: ${log.level}');
   }
 
-  static void dispose() => Logger.removeOutputListener((_) {});
+  static void dispose() => Logger.removeLogListener((_) {});
 
-  static void _handleLog(OutputEvent record) {
-    List<OutputEvent> newRecords = List.from(_logRecords.value);
+  static void _handleLog(LogEvent record) {
+    List<LogEvent> newRecords = List.from(_logRecords.value);
     final prevRecordIdx = newRecords.lastIndexWhere(
-      (OutputEvent l) => l.origin.time.isBefore(record.origin.time),
+      (LogEvent l) => l.time.isBefore(record.time),
     );
     newRecords.insert(prevRecordIdx + 1, record);
     if (newRecords.length > _maxRecordsStoredOnApp) {
@@ -33,11 +35,14 @@ class LogHandler {
     _logRecords.add(newRecords);
   }
 
-  static String formatLogRecord(OutputEvent record, {bool withDate = true}) {
-    final lines = record.lines.map(_formatLine).join('\n');
-    final dateTime = DateFormat('HH:mm:ss.SS').format(record.origin.time);
+  static String formatLogRecord(
+    LogEvent record, {
+    bool withDate = true,
+  }) {
+    final lines = log.printer.getPrinter.log(record).map(_formatLine).join('\n');
+    final dateTime = DateFormat('HH:mm:ss.SS').format(record.time);
     final datePrefix =
-        withDate ? DateFormat.yMd().format(record.origin.time) : '';
+        withDate ? DateFormat.yMd().format(record.time) : '';
     return '[${record.level.name.toUpperCase()}]  |  $datePrefix  |  $dateTime  ->  $lines';
   }
 
