@@ -9,7 +9,7 @@ enum PrettyPrintLevel {
 }
 
 extension PrettyPrinterEnumsExtension on PrettyPrintLevel {
-  LogPrinter get getPrinter {
+  PrettyPrinter get getPrinter {
     switch (this) {
       case PrettyPrintLevel.succinctPrinter:
         return PrettyPrinter(
@@ -40,7 +40,7 @@ extension PrettyPrinterEnumsExtension on PrettyPrintLevel {
       case PrettyPrintLevel.succinctPrinter:
         return 'Succinct';
       case PrettyPrintLevel.moderatePrinter:
-        return 'Modetate (Lv 1)';
+        return 'Moderate (Lv 1)';
       case PrettyPrintLevel.detailedPrinter:
         return 'Detailed (Lv 3)';
       case PrettyPrintLevel.highlyDetailedPrinter:
